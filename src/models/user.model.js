@@ -11,7 +11,7 @@ const UserSchema = new mongoose.Schema({
     firstName:{
          type:"String",
          required:true,
-         unique:true
+        
 
     },
 
@@ -19,7 +19,7 @@ const UserSchema = new mongoose.Schema({
 
          type:"String",
          required:true,
-         unique:true
+       
 
     }
 

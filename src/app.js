@@ -5,7 +5,8 @@ const authRoute= require('./routes/auth.route')
 app.use(express.json());
 app.use(cookieParser());
 
-app.use('/auth',authRoute);
+app.use('/',authRoute);
+app.use('/chat',require('./routes/chats.routes'));
 
 
 module.exports =app;

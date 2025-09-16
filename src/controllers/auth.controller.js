@@ -1,11 +1,11 @@
 const userModel= require('../models/user.model');
-
+const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
 
 async function register(req,res) {
 
-    const {fullName:{firstName,lastName},email,passwrod}=req.body;
+    const {fullName:{firstName,lastName},email,password}=req.body;
     try {
 
        const isUserExist= await userModel.findOne({email}) ;
@@ -15,7 +15,7 @@ async function register(req,res) {
         })
        }
       
-       const hashPassword=await bcrypt.hash(passwrod,10)
+       const hashPassword=await bcrypt.hash(password,10)
 
 
         const user =await userModel.create({
@@ -46,7 +46,7 @@ async function register(req,res) {
 
 async function login(req,res) {
 
-    const {email,passwrod}=req.body;
+    const {email,password}=req.body;
     try {
 
        const user= await userModel.findOne({email}) ;
@@ -56,14 +56,14 @@ async function login(req,res) {
         })
        }
       
-       const ispassValid = await bcrypt.compare(passwrod,user.password)
+       const ispassValid = await bcrypt.compare(password,user.password)
         if(!ispassValid){
         return res.status(400).json({
             message:"password is wrong"
         })
        }
 
-        const tokon = jwt.sign({
+        const token = jwt.sign({
             id:user._id
         },process.env.JWTSECRET);
 
@@ -78,11 +78,7 @@ res.json({
         console.log(error)
         
     } 
-
-    
 }
-
-
 
 module.exports ={
     register,login
